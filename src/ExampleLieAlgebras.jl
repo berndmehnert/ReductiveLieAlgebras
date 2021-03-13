@@ -5,9 +5,34 @@ define gl=gl_2, o_2, sym_2,... via their normalized orthonormal basis
 """
 sym_2 = [[1.0 0.0;0.0 0.0], [0.0 0.0;0.0 1.0], [0.0 1.0;1.0 0.0]/sqrt(2)]
 o_2 = [[0.0 1.0;-1.0 0.0]/sqrt(2)]
-gl = [sym_2; o_2]
+gl_2 = [sym_2; o_2]
 diag_2 = [[1.0 0.0;0.0 0.0], [0.0 0.0;0.0 1.0]]
 k(α) = [cos(α) -sin(α);sin(α) cos(α)]
+
+"""
+define gl(n) = Lie(GL(n,IR))
+"""
+function gl(n :: Int)
+    result = Matrix{Float64}[]
+    for i in 1:n
+        for j in 1:n
+            M = zeros(Int, n,n)
+            M[i,j] = 1.0
+            push!(result, M)
+        end
+    end
+    return result
+end
+
+function a(n :: Int)
+    result = Matrix{Float64}[]
+    for i in 1:n
+        M = zeros(Int, n,n)
+        M[i,i] = 1.0
+        push!(result, M)
+    end
+    return result
+end
 
 """
 define Lie algebra basis with sparse matrices (here fore the special case of Lorenz matrices)
