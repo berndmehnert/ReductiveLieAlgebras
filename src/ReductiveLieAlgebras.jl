@@ -1,7 +1,7 @@
 module ReductiveLieAlgebras
 using LinearAlgebra
 export bracket, ad, Ad, Φ, Dot, RootSpace, computeRootspaceDecomposition, ⊕, eigenvs, vectorSpaceIntersection, DirectSumMat, computeKernel, 
-       computeLinearFunctionData, projectionOntoSubspace, getFixSpace, getRootFunction, getPositiveRootSpaces
+       computeLinearFunctionData, projectionOntoSubspace, getFixSpace, getRootFunction, getPositiveRootSpaces, ReductiveLieAlgebra
 
        # Lie algebras are given as normalized(!) basis of real n × n matrices!
 
@@ -14,6 +14,23 @@ Dot(A :: AbstractMatrix{Float64}, B :: AbstractMatrix{Float64}) = -tr(A*Φ(B))
 struct RootSpace 
     root :: Vector{Float64}
     basis :: Array{<:AbstractMatrix{Float64}}
+end
+
+struct ReductiveLieAlgebra
+    g :: Array{<:AbstractMatrix{Float64}}
+    p :: Array{<:AbstractMatrix{Float64}}
+    k :: Array{<:AbstractMatrix{Float64}}
+end    
+
+"""
+Given a reductive Lie algebra, i.e. a Lie algebra 𝔤 (given by its normalized basis) such that Φ(𝔤) ⊂ 𝔤, use the involution Φ 
+to compute its maximal compact subalgebra 𝔨 (given by its normalized basis) as the matrices X with Φ(X)=X and its complement 𝔭 given by the matrices
+X such that Φ(X) = -X and return the full object of type ReductiveLieAlgebra(𝔤, 𝔭, 𝔨)
+"""
+function ReductiveLieAlgebra(𝔤 :: Array{<:AbstractMatrix{Float64}})
+    𝔨 = computeKernel(𝔤, 𝔤, X -> X - Φ(X))[1]
+    𝔭 = computeKernel(𝔤, 𝔤, X -> X + Φ(X))[1]
+    return ReductiveLieAlgebra(𝔤, 𝔭, 𝔨)
 end
 
 getRootFunction(𝔞, v) = H -> getVector(𝔞, H)⋅v
