@@ -72,4 +72,8 @@ end
         X = rs.basis[1]
         @test ad(H, X) ≈ λ(H)*X atol = 1e-14
     end
+    rsp = computeRootspaceDecomposition(a(3), gl(3))
+    Y = [1.0 0.0 0.0;0.0 0.5 0.0;0.0 0.0 -1.0]
+    pos_root_spaces = getPositiveRootSpaces(rsp, a(3), Y)
+    @test length(pos_root_spaces) == 3
 end

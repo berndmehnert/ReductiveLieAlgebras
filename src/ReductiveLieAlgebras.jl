@@ -1,7 +1,7 @@
 module ReductiveLieAlgebras
 using LinearAlgebra
 export bracket, ad, Ad, Φ, Dot, RootSpace, computeRootspaceDecomposition, ⊕, eigenvs, vectorSpaceIntersection, DirectSumMat, computeKernel, 
-       computeLinearFunctionData, projectionOntoSubspace, getFixSpace, getRootFunction
+       computeLinearFunctionData, projectionOntoSubspace, getFixSpace, getRootFunction, getPositiveRootSpaces
 
        # Lie algebras are given as normalized(!) basis of real n × n matrices!
 
@@ -18,6 +18,20 @@ end
 
 getRootFunction(𝔞, v) = H -> getVector(𝔞, H)⋅v
 
+"""
+Compute the root-spaces belonging to positive roots.
+rsp : the root space decomposition of 𝔞,𝔤
+Y : a regular element in 𝔞
+
+As result we get the rootspaces rspace in rsp for which rspace.root(Y) > 0.
+"""
+getPositiveRootSpaces(Σ :: Vector{RootSpace}, 𝔞 :: Array{<:AbstractMatrix{Float64}}, Y :: Matrix{Float64}) = filter(rspace -> getRootFunction(𝔞, rspace.root)(Y) > 0.0, Σ)
+
+"""
+Compute the rootspace decomposition of the pair (𝔞, 𝔤) where 𝔞 is a maximal abelian subalgebra of 𝔭
+The result is a list of type RootSpace.
+Note that at the moment as RootSpace.root the zero vector is allowed. 
+"""
 function computeRootspaceDecomposition(𝔞 :: Array{<:AbstractMatrix{Float64}}, 𝔤 :: Array{<:AbstractMatrix{Float64}})
     if length(𝔞) == 0
         return [RootSpace(Float64[], 𝔤)]
