@@ -82,9 +82,16 @@ end
     R = ReductiveLieAlgebra(gl(2))
     V = [[1.0 2.0;2.0 0.0]/3, [0.0 0; 0 1.0]]
     W = [[0.0 2.0;2.0 0.0]/2, [0.0 0; 0 1.0]]
+    Z = ⊕(V,W)
+    A = [[1.0 0; 0 0.0], [0.0 0; 0 1.0]]
     X, dimX = vectorSpaceIntersection(gl(2), V, W)
+    F, d = fixSpace(A, gl(2), gl(2))
+    _, d2, _ = factorSpace(V, [[0.0 0; 0 1.0]])
     @test length(R.g) == length(R.p) + length(R.k)
     @test Φ(R.p[1]) ≈ -R.p[1] atol = 1e-14
     @test Φ(R.k[1]) ≈ R.k[1] atol = 1e-14
     @test dimX == 1
+    @test length(Z) == 4
+    @test d == 2
+    @test d2 == 1
 end

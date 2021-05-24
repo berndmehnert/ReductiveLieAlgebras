@@ -1,7 +1,7 @@
 module ReductiveLieAlgebras
 using LinearAlgebra
 export bracket, ad, Ad, Φ, Dot, RootSpace, computeRootspaceDecomposition, ⊕, eigenvs, vectorSpaceIntersection, DirectSumMat, computeKernel, 
-       computeLinearFunctionData, projectionOntoSubspace, getFixSpace, getRootFunction, getPositiveRootSpaces, ReductiveLieAlgebra
+       computeLinearFunctionData, projectionOntoSubspace, getFixSpace, getRootFunction, getPositiveRootSpaces, ReductiveLieAlgebra, fixSpace, factorSpace
 
        # Lie algebras are given as normalized(!) basis of real n × n matrices!
 
