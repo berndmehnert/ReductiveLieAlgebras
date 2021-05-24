@@ -77,3 +77,14 @@ end
     pos_root_spaces = getPositiveRootSpaces(rsp, a(3), Y)
     @test length(pos_root_spaces) == 3
 end
+
+@testset "further basic tests" begin
+    R = ReductiveLieAlgebra(gl(2))
+    V = [[1.0 2.0;2.0 0.0]/3, [0.0 0; 0 1.0]]
+    W = [[0.0 2.0;2.0 0.0]/2, [0.0 0; 0 1.0]]
+    X, dimX = vectorSpaceIntersection(gl(2), V, W)
+    @test length(R.g) == length(R.p) + length(R.k)
+    @test Φ(R.p[1]) ≈ -R.p[1] atol = 1e-14
+    @test Φ(R.k[1]) ≈ R.k[1] atol = 1e-14
+    @test dimX == 1
+end
