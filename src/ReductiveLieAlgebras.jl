@@ -73,9 +73,9 @@ function eigenvs(B1, B2, f)
     if length(vals) == 0
         return Float64[]
     end
-    result = [vals[1]]
-    for i in 2:length(vals)
-        if abs(vals[i]-vals[i-1]) > 1e-14
+    result = []
+    for i in eachindex(vals)
+        if i == 1 || abs(vals[i]-vals[i-1]) > 1e-14
             push!(result, vals[i])
         end
     end
@@ -232,7 +232,7 @@ function getVector(basis, A :: AbstractMatrix{Float64})
 end
 
 function getElement(basis, v :: AbstractVector{Float64})
-    return sum([v[i] * basis[i] for i in 1:length(v)])
+    return sum([v[i] * basis[i] for i in eachindex(v)])
 end
 
 function getElements(basis, N :: AbstractMatrix{Float64})
